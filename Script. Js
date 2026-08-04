@@ -1,0 +1,80 @@
+// State Management Engine (Load from Persistent LocalStorage)
+let leadsCollection = JSON.parse(localStorage.getItem('gautam_crm_leads')) || [];
+
+document.getElementById('addBtn').addEventListener('click', injectNewLead);
+setupFilters();
+renderMatrix();
+
+function injectNewLead() {
+    const nameInput = document.getElementById('leadName');
+    const statusInput = document.getElementById('leadStatus');
+    const name = nameInput.value.trim();
+
+    if (name === '') {
+        alert('Gautam brother, please insert a valid Lead Name to secure data!');
+        return;
+    }
+
+    const newLead = {
+        id: Date.now(),
+        name: name,
+        status: statusInput.value
+    };
+
+    leadsCollection.push(newLead);
+    saveAndRefresh();
+    nameInput.value = '';
+}
+
+function deleteLead(id) {
+    leadsCollection = leadsCollection.filter(lead => lead.id !== id);
+    saveAndRefresh();
+}
+
+function saveAndRefresh() {
+    localStorage.setItem('gautam_crm_leads', JSON.stringify(leadsCollection));
+    renderMatrix();
+}
+
+function renderMatrix(filterType = 'All') {
+    const listContainer = document.getElementById('leadList');
+    listContainer.innerHTML = '';
+    
+    let total = 0, hot = 0, warm = 0;
+
+    leadsCollection.forEach(lead => {
+        total++;
+        if(lead.status === 'Hot') hot++;
+        if(lead.status === 'Warm') warm++;
+
+        // Filter Matrix Logic
+        if (filterType !== 'All' && lead.status !== filterType) return;
+
+        const li = document.createElement('li');
+        li.className = lead.status;
+        li.innerHTML = `
+            <span>👤 ${lead.name}</span>
+            <div>
+                <span class="status-badge badge-${lead.status}">${lead.status}</span>
+                <button class="delete-btn" onclick="deleteLead(${lead.id})">❌</button>
+            </div>
+        `;
+        listContainer.appendChild(li);
+    });
+
+    // Update Top Analytics Metrics
+    document.getElementById('totalCount').innerText = total;
+    document.getElementById('hotCount').innerText = hot;
+    document.getElementById('warmCount').innerText = warm;
+}
+
+function setupFilters() {
+    const buttons = document.querySelectorAll('.filter-section .filter-btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            buttons.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            renderMatrix(this.getAttribute('data-filter'));
+        });
+    });
+}
