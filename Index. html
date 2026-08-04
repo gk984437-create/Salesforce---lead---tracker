@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesforce Advanced CRM Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Salesforce Cloud Matrix</h1>
+        <p class="subtitle">Advanced Lead Optimization & Persistent Storage Engine</p>
+        
+        <!-- Advanced Metrics Counters -->
+        <div class="metrics-grid">
+            <div class="metric-card">Total: <span id="totalCount">0</span></div>
+            <div class="metric-card hot-card">🔥 Hot: <span id="hotCount">0</span></div>
+            <div class="metric-card warm-card">☀️ Warm: <span id="warmCount">0</span></div>
+        </div>
+
+        <div class="input-section">
+            <input type="text" id="leadName" placeholder="Enter Client / Lead Name...">
+            <select id="leadStatus">
+                <option value="Hot">🔥 Hot Lead</option>
+                <option value="Warm">☀️ Warm Lead</option>
+                <option value="Cold">❄️ Cold Lead</option>
+            </select>
+            <button id="addBtn">Secure Lead</button>
+        </div>
+
+        <!-- Advanced Filter Tabs -->
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="All">All Matrix</button>
+            <button class="filter-btn" data-filter="Hot">🔥 Hot</button>
+            <button class="filter-btn" data-filter="Warm">☀️ Warm</button>
+            <button class="filter-btn" data-filter="Cold">❄️ Cold</button>
+        </div>
+
+        <div class="tracker-container">
+            <h2>Active Cloud Database</h2>
+            <ul id="leadList">
+                <!-- Injected via JavaScript from LocalStorage -->
+            </ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
